@@ -165,9 +165,25 @@ def main():
             time.sleep(1)
             return
 
+        if bomb is not None:
+            if bird.rct.colliderect(bomb.rct):
+                # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
+                bird.change_img(8, screen)
+                pg.display.update()
+                time.sleep(1)
+                return
+
+        if beam is not None:
+            if bomb is not None:
+                if beam.rct.colliderect(bomb.rct):
+                    beam = None
+                    bomb = None
+                    return
+
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        beam.update(screen)   
+        if beam is not None:
+            beam.update(screen)   
         bomb.update(screen)
         pg.display.update()
         tmr += 1
